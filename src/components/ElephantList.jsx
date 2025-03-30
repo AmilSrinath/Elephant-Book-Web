@@ -82,7 +82,7 @@ const ElephantList = () => {
                         <Link to={`/elephants/${elephant.id}`} key={elephant._id} className="elephant-card">
                             <div className="elephant-image">
                                 {elephant.images && elephant.images.length > 0 ? (
-                                    <img src={`http://localhost:5000${elephant.images[0]}`} alt={elephant.name} />
+                                    <img src={`${elephant.images[0]}`} alt={elephant.name} />
                                 ) : (
                                     <div className="no-image">No Image</div>
                                 )}

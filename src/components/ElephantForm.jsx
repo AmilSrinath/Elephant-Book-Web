@@ -113,41 +113,40 @@ const ElephantForm = () => {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        setLoading(true)
-        setError("")
-        setSuccess("")
+        e.preventDefault();
+        setLoading(true);
+        setError("");
+        setSuccess("");
 
         try {
-            const formDataToSend = new FormData()
+            const formDataToSend = new FormData();
 
             // Append all form fields
             Object.keys(formData).forEach((key) => {
-                formDataToSend.append(key, formData[key])
-            })
-
-            // Append existing images if in edit mode
-            if (isEditMode) {
-                existingImages.forEach((img) => {
-                    formDataToSend.append("existingImages", img)
-                })
-            }
+                formDataToSend.append(key, formData[key]);
+            });
 
             // Append new images
             images.forEach((image) => {
-                formDataToSend.append("images", image)
-            })
+                formDataToSend.append("newImages", image); // use newImages for the new uploads
+            });
 
-            let response
+            // If in edit mode, append existing images
             if (isEditMode) {
-                response = await axios.patch(`http://localhost:4000/api/elephants/${id}`, formDataToSend)
-                setSuccess("Elephant updated successfully!")
-            } else {
-                response = await axios.post("http://localhost:4000/api/elephants", formDataToSend)
-                setSuccess("Elephant added successfully!")
+                existingImages.forEach((img) => {
+                    formDataToSend.append("existingImages", img); // handle existing images if necessary
+                });
+            }
 
-                // Reset form after successful submission
+            let response;
+            if (isEditMode) {
+                response = await axios.patch(`http://localhost:4000/api/elephants/${id}`, formDataToSend);
+                setSuccess("Elephant updated successfully!");
+            } else {
+                response = await axios.post("http://localhost:4000/api/elephants", formDataToSend);
+                setSuccess("Elephant added successfully!");
                 setFormData({
+                    // reset form data
                     name: "",
                     location: "",
                     gender: "Unknown",
@@ -166,22 +165,17 @@ const ElephantForm = () => {
                     time: new Date().toTimeString().split(" ")[0].slice(0, 5),
                     latitude: formData.latitude,
                     longitude: formData.longitude,
-                })
-                setImages([])
+                });
+                setImages([]);
             }
 
-            setLoading(false)
-
-            // Redirect to elephant details page after a short delay
-            // setTimeout(() => {
-            //     navigate(`/elephants/${response.data._id}`)
-            // }, 2000)
+            setLoading(false);
         } catch (err) {
-            setError("Failed to save elephant data")
-            setLoading(false)
-            console.error(err)
+            setError("Failed to save elephant data");
+            setLoading(false);
+            console.error(err);
         }
-    }
+    };
 
     if (loading && isEditMode) {
         return <div className="loading">Loading elephant data...</div>

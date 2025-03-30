@@ -72,7 +72,7 @@ const ElephantDetail = () => {
                         <>
                             <div className="main-image">
                                 <img
-                                    src={`http://localhost:4000${elephant.images[activeImage]}`}
+                                    src={`${elephant.images[activeImage]}`}
                                     alt={`${elephant.name} - main view`}
                                 />
                             </div>
@@ -85,7 +85,7 @@ const ElephantDetail = () => {
                                             className={`thumbnail ${index === activeImage ? "active" : ""}`}
                                             onClick={() => setActiveImage(index)}
                                         >
-                                            <img src={`http://localhost:4000${image}`} alt={`${elephant.name} - thumbnail ${index + 1}`} />
+                                            <img src={`${image}`} alt={`${elephant.name} - thumbnail ${index + 1}`} />
                                         </div>
                                     ))}
                                 </div>
